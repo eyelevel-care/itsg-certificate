@@ -3,7 +3,10 @@ ik := `read -e -p"Please enter ONLY THE FIRST 8 CHARS of your IK: " && echo $REP
 default:
   @just --list
 
-do-it: gen-priv gen-req extract-pubkey-from-req extract-dot-pkey show-pkey-hash finally
+do-it: preflight-check gen-priv gen-req extract-pubkey-from-req extract-dot-pkey show-pkey-hash finally
+
+preflight-check:
+  [[ $(ls ./out/) ]] && echo "./out/ is not empty, aborting" && exit 1 || true
 
 gen-priv:
   @echo "Generating private key..."
